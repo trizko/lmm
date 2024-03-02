@@ -1,1 +1,1 @@
-# llm - large murder mystery
+# llm - language murder mystery
