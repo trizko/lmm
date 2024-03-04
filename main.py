@@ -1,28 +1,37 @@
+import json
+import logging
 import os
 
+import uvicorn
+
+from dotenv import load_dotenv
+from fastapi import FastAPI
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
-from dotenv import load_dotenv
 
-# load environment variables
 load_dotenv()
+logger = logging.getLogger("uvicorn")
 
-# initialize the llm
-llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"))
 
-# initialize prompt template
+# initialize the chain of langchain components
 prompt = ChatPromptTemplate.from_messages([
     ("system", "You are world class technical documentation writer."),
     ("user", "{input}")
 ])
-
-# initialize output parser
+llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"))
 output_parser = StrOutputParser()
-
-# initialize chain
 chain = prompt | llm | output_parser
 
-output = chain.invoke({"input": "How do I use the LangChain API?"})
-print(output)
+
+app = FastAPI()
+
+
+@app.get("/chat/")
+async def generate_text():
+    return chain.invoke("I need to write a technical documentation for a new software.")
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
