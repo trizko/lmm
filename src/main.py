@@ -30,7 +30,7 @@ app = FastAPI()
 
 @app.get("/chat/")
 async def generate_text():
-    return chain.invoke("I need to write a technical documentation for a new software.")
+    return chain.invoke({"input": "I need to write a technical documentation for a new software."})
 
 
 if __name__ == "__main__":
