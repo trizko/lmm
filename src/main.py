@@ -19,7 +19,13 @@ logger = logging.getLogger("uvicorn")
 
 
 llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"))
-witness = Witness(llm)
+witness = Witness.from_json(llm, """{
+    "name": "Elizabeth Huntington",
+    "role": "Suspect",
+    "backstory": "Richard's wife and the matriarch of the family. She was unhappy in her marriage and suspected her husband of having an affair.",
+    "alibi": "She claims to have been attending a charity event at the time of the murder.",
+    "information": "Elizabeth had recently hired a private investigator to look into her husband's activities."
+}""")
 app = FastAPI()
 
 class InputText(BaseModel):
