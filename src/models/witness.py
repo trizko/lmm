@@ -70,6 +70,25 @@ detective:
         self.output_parser = StrOutputParser()
         self.chain = self.prompt_template | self.llm | self.output_parser
 
+    @classmethod
+    def from_json(cls, llm: ChatOpenAI, json_data: str):
+            """
+            Creates a Witness object from a JSON string.
+
+            Args:
+                json_data (str): The JSON string representing the witness data.
+
+            Returns:
+                Witness: The Witness object created from the JSON data.
+            """
+            witness_data = json.loads(json_data)
+            name = witness_data.get('name')
+            role = witness_data.get('role')
+            backstory = witness_data.get('backstory')
+            alibi = witness_data.get('alibi')
+            information = witness_data.get('information')
+            return cls(llm, name, role, backstory, alibi, information)
+
     def invoke(self, input_text):
         """
         Invokes the chain with the given input text and stores the result in the
