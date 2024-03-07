@@ -26,8 +26,7 @@ class Witness:
         self.is_murderer = is_murderer
         self.messages = ""
 
-        self.prompt_template = ChatPromptTemplate.from_template(
-            """
+        self.prompt_template = ChatPromptTemplate.from_messages([("system","""
 You are an agent in a murder mystery game set in a wealthy family's mansion. The
 patriarch of the family, Richard Huntington, has been found dead in his study,
 lying face down on the floor with a gunshot wound to the back of his head. The
@@ -61,11 +60,7 @@ Here is your alibi for the time of the murder: {alibi}
 Information that you know that may be related to the crime: {information}
 
 The following is your conversation with the human player of the game, The
-detective:
-
-{messages}
-            """
-        )
+detective:""")])
         self.llm = llm
         self.output_parser = StrOutputParser()
         self.chain = self.prompt_template | self.llm | self.output_parser
