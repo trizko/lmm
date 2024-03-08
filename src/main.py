@@ -28,12 +28,12 @@ witness = Witness.from_json(llm, """{
 }""")
 app = FastAPI()
 
-class InputText(BaseModel):
-    input_text: str
+class HumanInput(BaseModel):
+    input: str
 
 @app.post("/chat/")
-async def generate_text(input_text: InputText):
-    return witness.invoke({"input": input_text})
+async def generate_text(human_input: HumanInput):
+    return witness.predict(human_input.input)
 
 
 if __name__ == "__main__":
