@@ -108,5 +108,5 @@ You:"""
         Returns:
             str: The result obtained from invoking the chain.
         """
-        result = self.chain.predict(input=input_text)
+        result = self.chain.predict(input=input_text, stop="Detective:")
         return result
