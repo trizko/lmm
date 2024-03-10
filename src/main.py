@@ -19,13 +19,13 @@ logger = logging.getLogger("uvicorn")
 
 
 llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"))
-witness = Witness.from_json(llm, """{
+witnesses = [Witness.from_json(llm, """{
     "name": "Elizabeth Huntington",
     "role": "Suspect",
     "backstory": "Richard's wife and the matriarch of the family. She was unhappy in her marriage and suspected her husband of having an affair.",
     "alibi": "She claims to have been attending a charity event at the time of the murder.",
     "information": "Elizabeth had recently hired a private investigator to look into her husband's activities."
-}""")
+}""")]
 app = FastAPI()
 
 class HumanInput(BaseModel):
@@ -33,7 +33,7 @@ class HumanInput(BaseModel):
 
 @app.post("/chat/")
 async def generate_text(human_input: HumanInput):
-    return witness.predict(human_input.input)
+    return witnesses[0].predict(human_input.input)
 
 
 if __name__ == "__main__":
