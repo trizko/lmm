@@ -59,11 +59,12 @@ witnesses = [
 app = FastAPI()
 
 class HumanInput(BaseModel):
+    witness_id: int
     input: str
 
 @app.post("/chat/")
 async def generate_text(human_input: HumanInput):
-    return witnesses[0].predict(human_input.input)
+    return witnesses[human_input.witness_id].predict(human_input.input)
 
 
 if __name__ == "__main__":
