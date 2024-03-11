@@ -9,7 +9,7 @@ from fastapi import FastAPI, Body
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from pydantic import BaseModel
+from pydantic import BaseModel, conint
 
 from models.witness import Witness
 
@@ -59,7 +59,7 @@ witnesses = [
 app = FastAPI()
 
 class HumanInput(BaseModel):
-    witness_id: int
+    witness_id: conint(ge=0, le=(len(witnesses)-1))
     input: str
 
 @app.post("/chat/")
